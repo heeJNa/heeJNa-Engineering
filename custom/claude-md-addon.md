@@ -27,7 +27,9 @@
 - 방법론(TDD/디버깅)은 Superpowers 사용
 
 ### Quality Gate
-- Stop Hook이 자동으로 lint/typecheck 실행
+- **글로벌 Hook**: 프로젝트 Hook이 없을 때만 동작하는 폴백 (npm run lint, make lint 등 프로젝트 자체 스크립트 실행)
+- **프로젝트 Hook**: 프로젝트별 구체적 도구 실행 (ESLint, Ruff, nuxi typecheck 등)
+- 프로젝트 Hook이 있으면 글로벌 Hook은 자동으로 건너뜀 (중복 실행 방지)
 - 에러 발견 시 자동 수정 시도
 - `CLAUDE_SKIP_QUALITY_GATE=1`로 비활성화 가능
 

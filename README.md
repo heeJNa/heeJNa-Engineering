@@ -48,7 +48,7 @@
 |------|------|---------|
 | **CLAUDE.md** | 업무 매뉴얼 | "우리 프로젝트는 이런 구조고, 이런 규칙이 있어" |
 | **Rules** | 부서별 가이드 | "이 폴더 파일을 건드릴 땐 이 규칙을 따라" |
-| **Quality Gate Hook** | 품질 검수관 | 코드 저장 전에 자동으로 오류 검사 |
+| **Quality Gate Hook** | 품질 검수관 | 글로벌(폴백) + 프로젝트별(구체적 도구) 2계층 자동 검사 |
 | **Templates** | 신입 온보딩 키트 | Nuxt4, Vue3, FastAPI 등 프로젝트별 세팅 패키지 |
 | **OMC** | 팀장 + 전문가 팀 | 복잡한 작업을 여러 AI 에이전트가 분담하여 처리 |
 | **Superpowers** | 업무 방법론 교육 | TDD, 체계적 디버깅 등 검증된 개발 방법론 주입 |
@@ -124,7 +124,7 @@ Heejuna Engineering Framework는 이 문제를 정면으로 해결한다.
 | **오케스트레이션** | Oh-My-ClaudeCode (OMC) | Sisyphus System | 다중 에이전트 계층 구조. 복잡한 작업을 분할-위임-통합한다. |
 | **방법론** | Superpowers | obra (Jesse Vincent) | TDD, Systematic Debugging, Verification Loop 등 검증된 개발 방법론. |
 | **도구** | Skills + Agents | Anthropic | 재사용 가능한 워크플로우(Skills)와 전문화된 에이전트(Agents) 패턴. |
-| **품질 보증** | Quality Gate Hook | Custom | pre-commit 스타일 자동 검증. lint, typecheck, test를 커밋 전 강제 실행. |
+| **품질 보증** | Quality Gate Hook | Custom | 2계층 구조: 글로벌(폴백, 도구 무관) + 프로젝트(도구별 lint/typecheck 강제 실행). |
 | **철학** | CLAUDE.md | Anthropic Convention | 프로젝트의 맥락, 규칙, 패턴을 하나의 파일에 집약하여 AI에 주입. |
 | **도메인** | Project Rules | Claude Code | 파일 패턴 기반 규칙 자동 적용. 특정 디렉토리/파일에 맞는 지시를 자동 로드. |
 
@@ -175,8 +175,8 @@ cd heejuna-engineering
 ```
 
 `install.sh`가 수행하는 작업:
-- **글로벌**: `~/.claude/hooks/quality-gate.sh` 설치, `CLAUDE.md` 보강, `settings.json`에 Hook 등록
-- **프로젝트**: `.claude/hooks/`, `.claude/rules/` 에 템플릿별 파일 복사, 프로젝트 `settings.json` 생성
+- **글로벌**: `~/.claude/hooks/quality-gate.sh` 설치 (폴백 전용, 특정 도구 미지정), `CLAUDE.md` 보강, `settings.json`에 Hook 등록
+- **프로젝트**: `.claude/hooks/`, `.claude/rules/` 에 템플릿별 파일 복사, 프로젝트 `settings.json` 생성 (프로젝트 Hook이 있으면 글로벌 Hook은 자동 스킵)
 
 **4단계: 플러그인 설치 (선택)**
 
@@ -228,7 +228,7 @@ heejuna-engineering/
 │
 ├── custom/                            # 커스텀 확장
 │   ├── hooks/                         #   Quality Gate Hook 스크립트
-│   │   └── quality-gate.sh            #     lint + typecheck + test 자동 실행
+│   │   └── quality-gate.sh            #     글로벌 폴백 (프로젝트 Hook 없을 때만 동작)
 │   ├── claude-md-addon.md             #   CLAUDE.md에 병합할 추가 규칙
 │   └── settings-addon.json            #   Claude Code 설정 확장
 │
