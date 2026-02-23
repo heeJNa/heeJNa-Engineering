@@ -50,7 +50,6 @@
 | **Rules** | 부서별 가이드 | "이 폴더 파일을 건드릴 땐 이 규칙을 따라" |
 | **Quality Gate Hook** | 품질 검수관 | 코드 저장 전에 자동으로 오류 검사 |
 | **Templates** | 신입 온보딩 키트 | Nuxt4, Vue3, FastAPI 등 프로젝트별 세팅 패키지 |
-| **Plugins** | 추가 도구 모음 | 특정 분야(도메인) 전용 자동 검증 도구 |
 | **OMC** | 팀장 + 전문가 팀 | 복잡한 작업을 여러 AI 에이전트가 분담하여 처리 |
 | **Superpowers** | 업무 방법론 교육 | TDD, 체계적 디버깅 등 검증된 개발 방법론 주입 |
 
@@ -233,11 +232,6 @@ heejuna-engineering/
 │   ├── claude-md-addon.md             #   CLAUDE.md에 병합할 추가 규칙
 │   └── settings-addon.json            #   Claude Code 설정 확장
 │
-├── plugins/                           # 재사용 가능한 플러그인
-│   └── domain-verify/                 #   도메인별 자동 검증 (PostToolUse 훅)
-│       ├── hooks/domain-verify.sh     #     통합 디스패처
-│       └── skills/verify/             #     7개 도메인 검증 참조 문서
-│
 ├── project-templates/                 # 프로젝트 유형별 템플릿
 │   ├── nuxt4/                         #   Nuxt 4 (레이어, SSR, auto-import)
 │   │   └── .claude/                   #     hooks, rules 프리셋
@@ -313,26 +307,6 @@ FastAPI + PostgreSQL 기반 백엔드 프로젝트용.
 ```bash
 ./install.sh /path/to/project --template general
 ```
-
----
-
-## 플러그인
-
-### `domain-verify` — 도메인별 자동 검증
-
-AI가 v2 패턴의 파일을 편집할 때, PostToolUse 훅이 도메인별 검증 체크리스트를 Claude 컨텍스트에 직접 주입한다. "Verify Always, Trust Never" 원칙의 자동화.
-
-| 지원 도메인 | 핵심 검증 |
-|------------|----------|
-| v2 Router | def 사용, Service 호출, ok() 응답 |
-| v2 Service | DB 직접 접근 금지, WHERE 빌더 |
-| v2 Repository | **SQL 안전성 (CRITICAL)** — f-string 금지 |
-| v2 Model | WooriModel/BaseModel 상속 규칙 |
-| v2 Component | Quasar 금지, 디자인 토큰, 반응형 |
-| v2 API Module | createV2Client 사용 |
-| DB Migration | GRANT 권한 부여 |
-
-상세: [`plugins/domain-verify/README.md`](plugins/domain-verify/README.md)
 
 ---
 

@@ -790,16 +790,14 @@ Claude가 즉시 자가 검증 → 위반 시 자동 수정
 ### 적용 예시
 
 ```bash
-# case 블록 예시 (hooks/domain-verify.sh)
+# case 블록 예시 (.claude/hooks/domain-verify.sh)
 case "$FILE_PATH" in
-  */api/v2/*/*repository*.py)
+  */api/*/repository*.py)
     MSG="[Domain Verify: SQL 안전성] — CRITICAL 검증:
-    금지: f-string 값 삽입, replace sanitize, f-string IN절
-    필수: %s 바인딩, = ANY(%s), params: tuple = ()
+    금지: f-string 값 삽입, replace sanitize
+    필수: 파라미터 바인딩 사용
     위반 발견 시 즉시 수정하세요." ;;
 esac
 ```
 
-### 플러그인
-
-`plugins/domain-verify/` 에 범용 템플릿으로 제공. 새 프로젝트에 복사하여 도메인별 규칙만 커스터마이징하면 즉시 사용 가능. 상세는 [플러그인 README](../plugins/domain-verify/README.md) 참조.
+프로젝트별 도메인 규칙에 맞게 case 패턴과 체크리스트를 커스터마이징하여 사용한다.
