@@ -1,0 +1,7 @@
+{
+  "name": "domain-verify",
+  "version": "1.0.0",
+  "description": "도메인별 자동 검증 시스템. PostToolUse 훅이 v2 파일 편집 시 검증 체크리스트를 직접 주입한다.",
+  "author": "heejuna-engineering",
+  "hooks": "./hooks/hooks.json"
+}
